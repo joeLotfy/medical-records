@@ -1,6 +1,7 @@
 import { AuthUser } from "../domain/AuthUser";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { authRepository } from "../data/FirebaseAuthRepository";
+import { sendEmailVerification } from "@react-native-firebase/auth";
 
 interface AuthContextType{
     user: AuthUser | null;
@@ -17,6 +18,18 @@ interface AuthContextType{
     ) => Promise<void>;
     
     signOut: () => Promise<void>;
+
+    sendEmailVerification: () => Promise<void>;
+
+    refreshCurrentUser: () => Promise<AuthUser | null>;
+
+    updateDisplayName(displayName: string): Promise<void>;
+
+    updatePassword(
+        currentPassword: string,
+        newPassword: string
+    ): Promise<void>;
+
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,8 +68,21 @@ export function AuthProvider({ children }: AuthProviderProps){
             authRepository.signUpWithEmail(email, password),
 
         signOut: () => authRepository.signOut(),
+
+        sendEmailVerification: () => 
+            authRepository.sendEmailVerification(),
+
+        refreshCurrentUser: () =>
+            authRepository.refreshCurrentUser(),
+
+        updateDisplayName: (displayName) =>
+            authRepository.updateDisplayName(displayName),
+
+        updatePassword: (currentPassword, newPassword) =>
+            authRepository.updatePassword(currentPassword, newPassword),
         }),
-        [user, isLoading]
+        [user, isLoading],
+
     );
 
     return (

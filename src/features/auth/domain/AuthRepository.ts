@@ -16,4 +16,16 @@ export interface AuthRepository {
   ): Promise<void>;
 
   signOut(): Promise<void>;
+
+  sendEmailVerification(): Promise<void>;
+
+  refreshCurrentUser(): Promise<AuthUser | null>;
+
+  updateDisplayName(displayName: string): Promise<void>;
+
+  updatePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Promise<void>;
+  
 }

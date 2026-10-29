@@ -4,6 +4,12 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   type User as FirebaseUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  sendEmailVerification,
+  updatePassword as firebaseUpdatePassword,
+  updateProfile,
+  reload
 } from "firebase/auth";
 
 import { auth } from "../../../infrastructure/firebase/firebaseApp";
@@ -20,6 +26,7 @@ function toAuthUser(user: FirebaseUser | null): AuthUser | null {
     uid: user.uid,
     email: user.email,
     displayName: user.displayName,
+    emailVerified: user.emailVerified,
   };
 }
 
@@ -41,4 +48,47 @@ export const authRepository: AuthRepository = {
   async signOut() {
     await firebaseSignOut(auth);
   },
+
+  async sendEmailVerification() {
+    const user = auth.currentUser;
+
+    if(!user){throw new Error("No Authenticated user");}
+    if(!user.emailVerified){
+      await sendEmailVerification(user);
+    }
+  },
+
+  async refreshCurrentUser() {
+    const user = auth.currentUser;
+    if(!user){return null;}
+    await reload(user);
+    const refreshedUser= auth.currentUser;
+    return refreshedUser ? toAuthUser(refreshedUser) : null;
+  },
+
+  async updateDisplayName(displayName: string): Promise<void> {
+    const user = auth.currentUser;
+    if(!user){throw new Error("No Authenticated user.");}
+    await updateProfile(user, {displayName: displayName.trim(),});
+  },
+
+  async updatePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Promise<void> {
+    const user=auth.currentUser;
+    if(!user?.email){throw new Error("An email/password account is required");}
+    const hasPasswordProvider = user.providerData.some(
+      (provider) => provider.providerId === "password"
+    );
+    if(!hasPasswordProvider){throw new Error("This account does not have a password");}
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
+    await reauthenticateWithCredential(user, credential);
+    await firebaseUpdatePassword(user, newPassword);
+  },
+
+  
 };
