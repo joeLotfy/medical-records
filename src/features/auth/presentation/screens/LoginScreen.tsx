@@ -127,8 +127,16 @@ async function handleGoogleLogin() {
                     title="Log in"
                     onPress={handleLogin}
                     loading={loading}
-                    disabled={loading}
+                    disabled={loading || googleLoading}
                 />
+
+                <View style={styles.dividerContainer}>
+                    <View style={styles.line}/>
+                    <Text style={styles.dividerText}>
+                        OR
+                    </Text>
+                    <View style={styles.line}/>
+                </View>
 
                 <AppButton 
                     title="Continue with Google"
@@ -211,5 +219,23 @@ const styles = StyleSheet.create({
         color: colors.primary,
         fontWeight: "700",
         fontSize: 14,
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#E0E0E0', 
+    },
+    dividerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 20,
+        paddingHorizontal: 10,
+    },
+    dividerText: {
+        textAlign: 'center', 
+        fontWeight: "900", 
+        marginHorizontal: 10, 
+        //color: '#757575', 
+        textTransform: 'uppercase'
     },
 });
