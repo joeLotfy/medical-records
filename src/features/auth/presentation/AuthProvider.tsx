@@ -2,6 +2,7 @@ import { AuthUser } from "../domain/AuthUser";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { authRepository } from "../data/FirebaseAuthRepository";
 import { sendEmailVerification } from "@react-native-firebase/auth";
+import { signInWithGoogle } from "../data/GoogleSignInService";
 
 interface AuthContextType{
     user: AuthUser | null;
@@ -30,6 +31,7 @@ interface AuthContextType{
         newPassword: string
     ): Promise<void>;
 
+    signInWithGoogle: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -80,6 +82,9 @@ export function AuthProvider({ children }: AuthProviderProps){
 
         updatePassword: (currentPassword, newPassword) =>
             authRepository.updatePassword(currentPassword, newPassword),
+        
+        signInWithGoogle: () =>
+            signInWithGoogle(),
         }),
         [user, isLoading],
 

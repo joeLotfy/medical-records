@@ -8,6 +8,7 @@ import { AppButton } from "../../../../shared/components/AppButton";
 import { colors } from "../../../../shared/theme/colors";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../../app/navigation/routes";
+import { signInWithGoogle } from "../../data/GoogleSignInService";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
@@ -21,6 +22,12 @@ export function LoginScreen({ navigation }: Props) {
     const [emailError, setEmailError]= useState<string>();
     const [passwordError, setPasswordError]= useState<string>();
     const [loading, setLoading] = useState(false);
+
+    const [googleErrorMsg, setGoogleErrorMsg] = useState('');
+    const [googleEmailError, setGoogleEmailError]= useState<string>();
+    const [googlePasswordError, setGooglePasswordError]= useState<string>();
+    const [googleLoading, setGoogleLoading] = useState(false);
+
     async function handleLogin() {
         
         setErrorMsg('');
@@ -47,6 +54,18 @@ export function LoginScreen({ navigation }: Props) {
             setLoading(false);
         }
     }
+
+async function handleGoogleLogin() {
+    setGoogleErrorMsg('');
+    setGoogleLoading(true);
+    try {
+        await signInWithGoogle();
+    } catch (error: any) {
+        setGoogleErrorMsg(error?.message || 'Google Sign In Failed!');
+    } finally {
+        setGoogleLoading(false);
+    }
+}
 
     return (
         <Screen>
@@ -109,6 +128,14 @@ export function LoginScreen({ navigation }: Props) {
                     onPress={handleLogin}
                     loading={loading}
                     disabled={loading}
+                />
+
+                <AppButton 
+                    title="Continue with Google"
+                    variant="secondary"
+                    onPress={handleGoogleLogin}
+                    loading={googleLoading}
+                    disabled={loading || googleLoading}
                 />
 
                 <View style={styles.footer}>
