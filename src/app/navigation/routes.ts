@@ -3,5 +3,6 @@ export type RootStackParamList = {
     Login: undefined;
     SignUp: undefined;
     Home: undefined;
+    VerifyEmail: undefined;
 }
 //ts types for screen routs (<Stack.Screen>)

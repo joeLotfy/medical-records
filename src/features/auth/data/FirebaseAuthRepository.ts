@@ -53,9 +53,9 @@ export const authRepository: AuthRepository = {
     const user = auth.currentUser;
 
     if(!user){throw new Error("No Authenticated user");}
-    if(!user.emailVerified){
+    //if(!user.emailVerified){
       await sendEmailVerification(user);
-    }
+    //}
   },
 
   async refreshCurrentUser() {

@@ -55,17 +55,17 @@ export function LoginScreen({ navigation }: Props) {
         }
     }
 
-async function handleGoogleLogin() {
-    setGoogleErrorMsg('');
-    setGoogleLoading(true);
-    try {
-        await signInWithGoogle();
-    } catch (error: any) {
-        setGoogleErrorMsg(error?.message || 'Google Sign In Failed!');
-    } finally {
-        setGoogleLoading(false);
+    async function handleGoogleLogin() {
+        setGoogleErrorMsg('');
+        setGoogleLoading(true);
+        try {
+            await signInWithGoogle();
+        } catch (error: any) {
+            setGoogleErrorMsg(error?.message || 'Google Sign In Failed!');
+        } finally {
+            setGoogleLoading(false);
+        }
     }
-}
 
     return (
         <Screen>

@@ -9,6 +9,7 @@ import { LoginScreen } from "../../features/auth/presentation/screens/LoginScree
 import { useAuth } from "../../features/auth/presentation/useAuth";
 import { LoadingScreen } from "../../shared/components/LoadingScreen";
 import type { RootStackParamList } from "./routes";
+import { VerifyEmailScreen } from "../../features/auth/presentation/screens/VerifyEmailScreen";
 
 //init stack navigator with type safety configuration
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -17,24 +18,29 @@ export function RootNavigator() {
     const { user, isLoading } = useAuth();
 
       return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        contentStyle: {
-          backgroundColor: colors.background,
-        },
-        animation: "fade",
-      }}
-    >
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: colors.background,
+          },
+          animation: "fade",
+        }}
+      >
       {isLoading ? (
         <Stack.Screen
           name="Loading"
           component={LoadingScreen}
         />
-      ) : user ? (
+      ): user?.emailVerified?  (
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+        name="Home"
+        component={HomeScreen}
+        />
+      ): user ? (
+        <Stack.Screen 
+          name="VerifyEmail"
+          component={VerifyEmailScreen}
         />
       ) : (
         <>
@@ -54,7 +60,7 @@ export function RootNavigator() {
 }
 
 
-// 4. Global type declaration for useNavigation hook autocomplete
+//Global type declaration for useNavigation hook autocomplete
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
