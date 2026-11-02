@@ -3,4 +3,5 @@ export interface AuthUser {
     email: string | null;
     displayName: string | null;
     emailVerified: boolean;
+    providerData: any;
 }

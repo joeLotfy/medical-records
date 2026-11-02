@@ -13,7 +13,7 @@ import { AuthUser } from "../../domain/AuthUser";
 type Props = NativeStackScreenProps<RootStackParamList, "VerifyEmail">;
 const COOLDOWN_TIME_SECS = 60;
 
-export function VerifyEmailScreen({ navigation }: Props){
+export function VerifyEmailScreen(){
     const { sendEmailVerification, refreshCurrentUser, signOut } = useAuth();
 
     const [cooldown, setCooldown] = useState(0);

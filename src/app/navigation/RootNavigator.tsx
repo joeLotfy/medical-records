@@ -10,12 +10,13 @@ import { useAuth } from "../../features/auth/presentation/useAuth";
 import { LoadingScreen } from "../../shared/components/LoadingScreen";
 import type { RootStackParamList } from "./routes";
 import { VerifyEmailScreen } from "../../features/auth/presentation/screens/VerifyEmailScreen";
+import { AuthenticatedDrawer } from "./AuthenticatedDrawer";
 
 //init stack navigator with type safety configuration
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
-    const { user, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
 
       return (
       <Stack.Navigator
@@ -34,8 +35,8 @@ export function RootNavigator() {
         />
       ): user?.emailVerified?  (
         <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeDrawer"
+        component={AuthenticatedDrawer}
         />
       ): user ? (
         <Stack.Screen 

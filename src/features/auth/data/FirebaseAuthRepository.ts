@@ -27,6 +27,7 @@ function toAuthUser(user: FirebaseUser | null): AuthUser | null {
     email: user.email,
     displayName: user.displayName,
     emailVerified: user.emailVerified,
+    providerData: user.providerData,
   };
 }
 
@@ -70,6 +71,7 @@ export const authRepository: AuthRepository = {
     const user = auth.currentUser;
     if(!user){throw new Error("No Authenticated user.");}
     await updateProfile(user, {displayName: displayName.trim(),});
+    await reload(user);
   },
 
   async updatePassword(
