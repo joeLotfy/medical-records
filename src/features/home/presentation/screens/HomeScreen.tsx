@@ -4,7 +4,6 @@ import { View, Text, Button, StyleSheet, TextInput } from "react-native";
 import { Screen } from "../../../../shared/components/Screen";
 import { AppButton } from "../../../../shared/components/AppButton";
 import { colors } from "../../../../shared/theme/colors";
-import { AuthenticatedDrawer } from "../../../../app/navigation/AuthenticatedDrawer";
 
 export function HomeScreen(){
     const {user, signOut} = useAuth();
