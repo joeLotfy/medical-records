@@ -4,10 +4,12 @@ import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HomeScreen } from "../../features/home/presentation/screens/HomeScreen";
 import { ProfileScreen } from "../../features/auth/presentation/screens/ProfileScreen";
+import { MedicalDocumentsScreen } from "../../features/medical-documents/presentation/screens/MedicalDocumentsScreen";
 
 type TabParamList = {
     Home: undefined;
     Profile: undefined;
+    Documents: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -25,6 +27,7 @@ type IconName = React.ComponentProps<typeof Ionicons>["name"];
 const ICONS: Record<keyof TabParamList, [IconName, IconName]> = {
     Home: ["home", "home-outline"],
     Profile: ["person", "person-outline"],
+    Documents: ["document", "document-outline"],
 };
 
 export function AuthenticatedTabs() {
@@ -73,6 +76,11 @@ export function AuthenticatedTabs() {
                 name="Profile"
                 component={ProfileScreen}
                 options={{ tabBarLabel: "Profile" }}
+            />
+            <Tab.Screen 
+                name="Documents"
+                component={MedicalDocumentsScreen}
+                options={{ tabBarLabel: "Medical Documents" }}
             />
         </Tab.Navigator>
     );

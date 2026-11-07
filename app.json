@@ -41,7 +41,12 @@
             "kotlinVersion": "2.4.0"
           }
         }
-      ]
+      ],
+      "expo-document-picker",
+      "expo-file-system",
+      "expo-sharing",
+      "expo-secure-store",
+      "expo-font"
     ]
   }
 }
