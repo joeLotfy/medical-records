@@ -3,10 +3,17 @@
 import * as FileSystem from "expo-file-system/legacy"
 import { deleteMedicalDocument, downloadMedicalDocument, getOrCreateMedicalRecordsFolder, GoogleDriveFile, listMedicalDocuments, uploadMedicalDocument } from "./GoogleDriveService";
 import { MedicalDocument } from "../domain/MedicalDocument";
-import { getConnectedDriveEmail, getSavedFolderId, saveDriveConnection, disconnectDrive as clearSavedDriveConnection } from "./GoogleDriveStorage";
+import { 
+    saveDriveConnection,
+    getSavedFolderId, 
+    getConnectedDriveEmail,
+    getSavedFirebaseUid, 
+    disconnectDrive as clearSavedDriveConnection 
+} from "./GoogleDriveStorage";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { connectGoogleDrive, getDriveAccesstoken } from "./GoogleDriveAuthService";
 import { MedicalDocumentRepository } from "../domain/MedicalDocumentRepository";
+import { auth } from "../../../infrastructure/firebase/firebaseApp";
 
 
 function mapDriveFile(file: GoogleDriveFile): MedicalDocument {
@@ -23,6 +30,16 @@ function mapDriveFile(file: GoogleDriveFile): MedicalDocument {
 
 
 async function getDriveContext() {
+    const firebaseUid = auth.currentUser?.uid;
+    if(!firebaseUid)
+        throw new Error("you must sign in to the App before accessing Google Drive!!")
+    ;
+
+    const savedFirebaseUid = await getSavedFirebaseUid();
+    if(savedFirebaseUid !== firebaseUid)
+        throw new Error("this google drive connection belongs to another user. please reconnect your drive.")
+    ;
+
     const savedEmail = await getConnectedDriveEmail();
     if(!savedEmail)
         throw new Error("please connect your google drive first!!!")
@@ -52,6 +69,10 @@ async function getDriveContext() {
 
 class GoogleDriveDocumentRepository implements MedicalDocumentRepository{
     async connectDrive(): Promise<void> {
+        const firebaseUid= auth.currentUser?.uid;
+        if(!firebaseUid)
+            throw new Error("you must sign in before connecting google drive!!!!")
+        ;
         const connection = await connectGoogleDrive();
         const folder = await getOrCreateMedicalRecordsFolder(
             connection.accessToken,
@@ -60,6 +81,7 @@ class GoogleDriveDocumentRepository implements MedicalDocumentRepository{
         await saveDriveConnection(
             connection.email,
             folder.id,
+            firebaseUid,
         );
     }
 

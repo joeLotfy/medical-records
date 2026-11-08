@@ -1,7 +1,6 @@
 import { AuthUser } from "../domain/AuthUser";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { authRepository } from "../data/FirebaseAuthRepository";
-import { sendEmailVerification } from "@react-native-firebase/auth";
 import { signInWithGoogle } from "../data/GoogleSignInService";
 
 interface AuthContextType{

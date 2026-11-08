@@ -2,7 +2,6 @@
 //config ts param list
 import { HomeScreen } from "../../features/home/presentation/screens/HomeScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { colors } from "../../shared/theme/colors";
 import { SignUpScreen } from "../../features/auth/presentation/screens/SignUpScreen";
 import { LoginScreen } from "../../features/auth/presentation/screens/LoginScreen";

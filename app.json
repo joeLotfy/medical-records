@@ -3,14 +3,24 @@
     "name": "MedicalRecords",
     "slug": "MedicalRecords",
     "version": "1.0.0",
+    "scheme": "medicalrecords",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "com.joelotfy.MedicalRecords",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleURLTypes":[
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.177259700447-g95a03da1ruq9vc6397of0csp4rlufi6",
+              "medicalrecords"
+            ]
+          }
+        ]
       }
     },
     "android": {
@@ -46,7 +56,32 @@
       "expo-file-system",
       "expo-sharing",
       "expo-secure-store",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-share-intent",
+        {
+          "iosActivationRules":{
+            "NSExtensionActivationSupportsImageWithMaxCount": 20,
+            "NSExtensionActivationSupportsFileWithMaxCount": 20
+          },
+          "androidIntentFilters": [
+            "image/*",
+            "application/pdf"
+          ],
+          "androidMultiIntentFilters":[
+            "image/*",
+            "application/pdf",
+            "*/*"
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "MedicalRecords needs access to photos you choose to upload.",
+          "cameraPermission": "MedicalRecords needs camera access to capture medical documents."
+        }
+      ]
     ]
   }
 }
